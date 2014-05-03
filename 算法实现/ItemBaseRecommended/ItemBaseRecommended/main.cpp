@@ -16,22 +16,22 @@ const int itemSum = 3952;          //数据集的产品总数
 const int recommendNum = 10;                    //为每个用户推荐产品的数量recommendNum
 char datasetFile[100] = "E:\\mytest\\ratings.dat";
 int ArrTrain[itemSum][userSum] = { 0 };	       //训练集
-int test[itemSum][userSum] = { 0 };           //测试集
+int ArrTest[itemSum][userSum] = { 0 };           //测试集
 double trainuseritem[userSum][itemSum] = { 0.0 };//兴趣程度 矩阵
-int recommend[userSum][recommendNum] = { 0 };     //为每个用户推荐recommendNum个物品
-struct simi
+int ArrRecommended[userSum][recommendNum] = { 0 };     //用户推荐矩阵，向每用户推荐recommendNum个
+struct Simi
 {
 	double value; //相似值 
 	int num;	 //相似物品号 
 };
-simi simiItem[itemSum][itemSum]; //排序后的相似性矩阵
+Simi ArrOrderedItemSimi[itemSum][itemSum]; //排序后的相似性矩阵
 
-//第一步，拆分数据集为测试集test和训练集train，其中1/m为测试集
+//第一步，拆分数据集为测试集ArrTest和训练集ArrTrain，其中1/m为测试集
 int SplitData(int m, int k);
 //寻找数据集每条记录对应的用户号和物品号
 int Buf_UIR(char* buf, int* user, int* item);
 double Simility(int* ItemA, int* ItemB);    //第二步，计算物品之间的相似性，获得物品相似性矩阵
-int sort(double* simArr, simi* simStruct); //第三步，物品相似性矩阵排序（根据相似性由高到低排序）
+int sort(double* simArr, Simi* simStruct); //第三步，物品相似性矩阵排序（根据相似性由高到低排序）
 double getUserLikeItem(int i, int j, int k); //第四步，得到用户i对物品j预测兴趣程度，利用k个最近邻来计算
 int getRecommend();                       //第五步，通过物品兴趣程度，推荐前recommendNum个
 double Recall();                           //第六步，计算召回率、准确率和覆盖率
@@ -43,65 +43,48 @@ void main()
 {
 	int i, j;
 	double recall, precision, coverage, diversity;
-	int k;        //去用户的k个最近邻居来计算推荐物品
-	k = 10;
-	/*printf("请输入取最近邻居做计算的个数：k=");
-	scanf("%d", &k);*/
-
+	int k=10;        //取用户的 10 个最近邻居
 	
-
-
-	//cout << "分别向前10个用户推荐前10个产品：\n";
-
-	//1.初始化数据集
-	SplitData(8, 1); //随即分配1/8为测试集，其他为训练集
-	//输出初始化的矩阵	
-	/*
-	for (i=0;i<5;i++)
-	{
-	cout<<"Item"<<i<<":   "<<endl;
-	for (j=0;j<100;j++)
-	{
-	cout<<train[i][j]<<"  ";
-	}
-	cout<<endl;
-	}
-	*/
-
-	//动态分配内存空间给用物品相似性矩阵
-	double **itemsim;
-	itemsim = (double**)malloc(sizeof(double*)*itemSum);
+	//1.将数据集分为训练集 和 测试集
+	SplitData(8, 1); 
+	
+	//动态为物品相似性矩阵分配空间
+	double **ArrItemSimi;
+	ArrItemSimi = (double**)malloc(sizeof(double*)*itemSum);
 	for (i = 0; i<itemSum; i++)
 	{
-		itemsim[i] = (double*)malloc(sizeof(double)*itemSum);
+		ArrItemSimi[i] = (double*)malloc(sizeof(double)*itemSum);
 	}
 	//2.计算物品之间相似性，得到相似性矩阵
 	for (i = 0; i<itemSum; i++)
 	{
 		for (j = 0; j<itemSum; j++)
 		{
-			itemsim[i][j] = Simility(ArrTrain[i], ArrTrain[j]);
+			ArrItemSimi[i][j] = Simility(ArrTrain[i], ArrTrain[j]);
 		}
 	}
+
+#pragma region --输出物品相似性矩阵
 	//输出物品相似性矩阵	
 	/*
+	cout<<"物品相似性矩阵:\n";
 	for (i=0;i<5;i++)
 	{
 	cout<<"Item"<<i<<":   "<<endl;
 	for (j=0;j<100;j++)
 	{
-	cout<<itemsim[i][j]<<"  ";
+	cout<<ArrItemSimi[i][j]<<"  ";
 	}
 	cout<<endl;
 	}
 	*/
+#pragma endregion
+
 
 	//3.物品相似度由高到低排序
 	for (i = 0; i<itemSum; i++)
 	{
-		//cout<<"Item"<<i<<":   "<<endl;
-		sort(itemsim[i], simiItem[i]);
-		//cout<<endl;
+		sort(ArrItemSimi[i], ArrOrderedItemSimi[i]);
 	}
 	//输出排序后的物品相似性矩阵
 	/*
@@ -110,7 +93,7 @@ void main()
 	cout<<"item"<<i<<":  "<<endl;
 	for(j=0;j<100;j++)
 	{
-	cout<<simiItem[i][j].num<<","<<simiItem[i][j].value<<"  ";
+	cout<<ArrOrderedItemSimi[i][j].num<<","<<ArrOrderedItemSimi[i][j].value<<"  ";
 	}
 	cout<<endl;
 	}
@@ -152,28 +135,24 @@ void main()
 	//---------------------------------------------
 */
 	recall = Recall();	//计算召回率
-	//printf("召回率:recall=%lf ", recall);
-	//cout << "\n";
+
 	precision = Precision();//计算准确率
-	//printf("准确率 :precision=%lf ", precision);
-	//cout << "\n";
+
 	coverage = Coverage();//计算覆盖率
-	//printf("覆盖率:coverage=%lf ", precision);
+
 	cout << "算法结果如下：\n";
 
 	cout << setw(10) << "召回率" << setw(10) << "准确率" << setw(10) << "覆盖率" << endl;
 	cout << "\n";
 	cout << setw(10) << recall << setw(10) << precision << setw(10) << precision << endl;
 	cout << "\n";
-	//diversity = Diversity(itemsim);//计算多样性
-	//printf("多样性diversity=%lf ", diversity);
 
 	//释放内存 
 	for (i = 0; i<itemSum; i++)
 	{
-		free(itemsim[i]);
+		free(ArrItemSimi[i]);
 	}
-	free(itemsim);
+	free(ArrItemSimi);
 
 	cout << "\n ---计算完成---\n";
 	cout << "请输入需要推荐产品的用户ID (0<ID<6040)：\n";
@@ -182,22 +161,21 @@ void main()
 	cout << "向该用户 "<<userID<<" 推荐的产品ID如下：\n";
 	for (int i = 0; i < 10; i++)
 	{
-		cout << recommend[userID][i] << " ";
+		cout << ArrRecommended[userID][i] << " ";
 
 	}
 
 	int hehe;
 	cin >> hehe;
-	//return 1;
 }
 
-//拆分数据集为测试集test和训练集trainuser，其中1/m为测试集,取不同的k<=m-1值 在相同的随即种子下可得到不同的测/训集合
+//拆分数据集为测试集ArrTest和训练集trainuser，其中1/m为测试集,取不同的k<=m-1值 在相同的随即种子下可得到不同的测/训集合
 int SplitData(int m, int k)
 {
 	fp = fopen(datasetFile, "r");
 	char tmpbuf[100];		//暂存文件一行记录
-	int usernum;
-	int itemnum;
+	int userNum;            //用户编号
+	int itemNum;            //物品编号
 
 	if (!fp)
 	{
@@ -210,13 +188,13 @@ int SplitData(int m, int k)
 		while (!feof(fp))
 		{
 			fgets(tmpbuf, 100, fp);                     //将fp指向的当前记录存到tmpbuf[100]
-			Buf_UIR(tmpbuf, &usernum, &itemnum);        //寻找数据集每条记录对应的用户号和物品号
-			if (usernum <= userSum&&itemnum <= itemSum)
+			Buf_UIR(tmpbuf, &userNum, &itemNum);        //寻找数据集每条记录对应的用户号和物品号
+			if (userNum <= userSum&&itemNum <= itemSum)
 			{
 				if (rand() % (m - 1) == k)                       //判断随机产生0-7之间的随机数是否等于k
-					test[itemnum - 1][usernum - 1] = 1;        //rate为评分，再此实验中只需统计有无评分的，无需讨论具体评分
+					ArrTest[itemNum - 1][userNum - 1] = 1;        //rate为评分，再此实验中只需统计有无评分的，无需讨论具体评分
 				else
-					ArrTrain[itemnum - 1][usernum - 1] = 1;  //用户号的物品号均从0开始算起，
+					ArrTrain[itemNum - 1][userNum - 1] = 1;  //用户号的物品号均从0开始算起，
 			}
 		}
 		fclose(fp);
@@ -285,13 +263,13 @@ double Simility(int* ItemA, int* ItemB)
 /*物品相似性矩阵排序（根据相似性由高到低排序），每行第一个是自己*/
 #include <algorithm>
 struct SimiLessComp {
-	bool operator () (const simi& a, const simi& b) const {
+	bool operator () (const Simi& a, const Simi& b) const {
 		return a.value > b.value;
 	}
 };
 
 
-int sort(double* simArr, simi* simStruct)
+int sort(double* simArr, Simi* simStruct)
 {
 #if 1
 	for (int i = 0; i < itemSum; ++i)
@@ -333,11 +311,11 @@ int sort(double* simArr, simi* simStruct)
 //得到用户i对物品j预测兴趣程度，用于推荐
 double getUserLikeItem(int i, int j, int k)
 {
-	for (int x = 1; x <= k; x++)//从物品j最相似的k个物品中，找出用户i有过行为的物品,因为第一个simiItem[][]中每行第一个存放的是自己，所以从第二个开始算，x=1
+	for (int x = 1; x <= k; x++)//从物品j最相似的k个物品中，找出用户i有过行为的物品,因为第一个ArrOrderedItemSimi[][]中每行第一个存放的是自己，所以从第二个开始算，x=1
 	{
-		if (ArrTrain[simiItem[j][x].num][i]>0)//若这个用户同样对相似物品也有过行为
+		if (ArrTrain[ArrOrderedItemSimi[j][x].num][i]>0)//若这个用户同样对相似物品也有过行为
 		{
-			trainuseritem[i][j] += simiItem[j][x].value;
+			trainuseritem[i][j] += ArrOrderedItemSimi[j][x].value;
 		}
 	}
 	return trainuseritem[i][j];
@@ -362,7 +340,7 @@ int getRecommend()
 				}
 			}
 			finflag[maxnum] = 1;
-			recommend[i][x] = maxnum;//recommend数组从0开始使用
+			ArrRecommended[i][x] = maxnum;//recommend数组从0开始使用
 		}
 	}
 	return 1;
@@ -370,19 +348,19 @@ int getRecommend()
 
 
 //计算召回率
-double Recall()   //test[usersum][itemSum], recommend[usersum][recommendNum],recommendNum为推荐数
+double Recall()   //ArrTest[usersum][itemSum], recommend[usersum][recommendNum],recommendNum为推荐数
 {
 	int i, j, k, tnum = 0, rnum = 0, count[userSum] = { 0 };  //tnum为测试集上喜欢的物品总数;count[i]为第i个用户的推荐结果与测试集上命中的物品个数交集，rnum为总共命中的物品个数
 	for (i = 0; i<userSum; i++)
 	{
 		for (j = 0; j<itemSum; j++)
 		{
-			if (test[j][i] != 0)          //如果用户i对物品j感兴趣
+			if (ArrTest[j][i] != 0)          //如果用户i对物品j感兴趣
 			{
 				tnum++;
 				for (k = 0; k<recommendNum; k++)
 				{
-					if (recommend[i][k] == j)    //用户i对物品j感兴趣的同时，物品j还是被推荐的物品
+					if (ArrRecommended[i][k] == j)    //用户i对物品j感兴趣的同时，物品j还是被推荐的物品
 						count[i]++;
 				}
 			}
@@ -392,18 +370,18 @@ double Recall()   //test[usersum][itemSum], recommend[usersum][recommendNum],rec
 	return rnum / (tnum*1.0);
 }
 //计算准确率
-double Precision()   //test[usersum][itemSum], recommend[usersum][recommendNum],recommendNum为推荐数
+double Precision()   //ArrTest[usersum][itemSum], recommend[usersum][recommendNum],recommendNum为推荐数
 {
 	int i, j, k, rnum = 0, count[userSum] = { 0 };  //count[i]为第i个用户的推荐结果与测试集上命中的物品个数，rnum为总共命中的物品个数
 	for (i = 0; i<userSum; i++)
 	{
 		for (j = 0; j<itemSum; j++)
 		{
-			if (test[j][i] != 0)          //如果用户i对物品j感兴趣
+			if (ArrTest[j][i] != 0)          //如果用户i对物品j感兴趣
 			{
 				for (k = 0; k<recommendNum; k++)
 				{
-					if (recommend[i][k] == j)    //用户i对物品j感兴趣的同时，物品j还是被推荐的物品
+					if (ArrRecommended[i][k] == j)    //用户i对物品j感兴趣的同时，物品j还是被推荐的物品
 						count[i]++;
 				}
 			}
@@ -420,7 +398,7 @@ double Coverage()
 	{
 		for (j = 0; j<recommendNum; j++)
 		{
-			k = recommend[i][j];      // k=推荐给用户i的第j个物品的物品号
+			k = ArrRecommended[i][j];      // k=推荐给用户i的第j个物品的物品号
 			if (count[k] == NULL)      //判断第k个物品是否已经覆盖
 			{
 				count[k] = 1;
@@ -440,7 +418,7 @@ double Diversity(double **a)
 		{
 			for (int k = j + 1; k<recommendNum; k++)
 			{
-				count = count + a[recommend[i][j]][recommend[i][k]];
+				count = count + a[ArrRecommended[i][j]][ArrRecommended[i][k]];
 			}
 		}
 		sum = sum + 1 - 2 * count / (recommendNum*(recommendNum - 1));  //将每个用户的多样性值累加到sum
