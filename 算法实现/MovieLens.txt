@@ -1,0 +1,3 @@
+6000名用户对4000部电影的100万条评分数据
+
+user_id  movie_id  rating timestamp
