@@ -1,0 +1,6 @@
+F:\2014-毕设\1智能电子商务系统的用户行为建模和数据挖掘算法研究\代码\Person\RecommendedHelper\RecommendedHelper.ReadDatasetToSQL\bin\Debug\RecommendedHelper.ReadDatasetToSQL.exe.config
+F:\2014-毕设\1智能电子商务系统的用户行为建模和数据挖掘算法研究\代码\Person\RecommendedHelper\RecommendedHelper.ReadDatasetToSQL\bin\Debug\RecommendedHelper.ReadDatasetToSQL.exe
+F:\2014-毕设\1智能电子商务系统的用户行为建模和数据挖掘算法研究\代码\Person\RecommendedHelper\RecommendedHelper.ReadDatasetToSQL\bin\Debug\RecommendedHelper.ReadDatasetToSQL.pdb
+F:\2014-毕设\1智能电子商务系统的用户行为建模和数据挖掘算法研究\代码\Person\RecommendedHelper\RecommendedHelper.ReadDatasetToSQL\obj\Debug\RecommendedHelper.ReadDatasetToSQL.csprojResolveAssemblyReference.cache
+F:\2014-毕设\1智能电子商务系统的用户行为建模和数据挖掘算法研究\代码\Person\RecommendedHelper\RecommendedHelper.ReadDatasetToSQL\obj\Debug\RecommendedHelper.ReadDatasetToSQL.exe
+F:\2014-毕设\1智能电子商务系统的用户行为建模和数据挖掘算法研究\代码\Person\RecommendedHelper\RecommendedHelper.ReadDatasetToSQL\obj\Debug\RecommendedHelper.ReadDatasetToSQL.pdb

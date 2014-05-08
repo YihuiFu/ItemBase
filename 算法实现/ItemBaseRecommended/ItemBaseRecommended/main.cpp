@@ -14,7 +14,7 @@ FILE *fp;
 const int userSum = 6040;          //数据集的用户总数
 const int itemSum = 3952;          //数据集的产品总数
 const int recommendNum = 10;                    //为每个用户推荐产品的数量recommendNum
-char datasetFile[100] = "E:\\mytest\\ratings.dat";
+char datasetFile[100] = "E:\\mytest\\ratings.dat";    //UserID::MovieID::Rating::Time
 int ArrTrain[itemSum][userSum] = { 0 };	       //训练集
 int ArrTest[itemSum][userSum] = { 0 };           //测试集
 double trainuseritem[userSum][itemSum] = { 0.0 };//兴趣程度 矩阵
@@ -47,6 +47,13 @@ void main()
 	
 	//1.将数据集分为训练集 和 测试集
 	SplitData(8, 1); 
+
+
+	//输出训练集的的前
+	for (int i = 0; i < 10; i++)
+	{
+		cout <<ArrTrain[0][i]<<" " ;
+	}
 	
 	//动态为物品相似性矩阵分配空间
 	double **ArrItemSimi;
@@ -234,8 +241,10 @@ double Simility(int* ItemA, int* ItemB)
 	int countIb = 0;
 
 	int i;
-	for (i = 0; i<itemSum; i++)
+	//--------------------------------------------
+	for (i = 0; i<userSum; i++)
 	{
+		//int aa = ItemA[4000];
 		if (ItemA[i]>0 && ItemB[i]>0)
 		{
 			comUser++;//查找ItemA与ItemB的都被用户评论的用户个数
