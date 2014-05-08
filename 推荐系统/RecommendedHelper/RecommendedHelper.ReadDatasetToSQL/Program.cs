@@ -57,8 +57,17 @@ namespace RecommendedHelper.ReadDatasetToSQL
 
             #endregion
 
-            Recommend recommend = new Recommend();
-            recommend.SplitData();
+            //Recommend recommend = new Recommend();
+            //recommend.SplitData();
+
+            //---------测试------------------
+
+            main recommend = new main();
+            recommend.SplitDataSet(8, 1);
+            recommend.GetSimilarityMatrix();
+
+            //------------------------------
+
 
             Console.ReadKey();
 

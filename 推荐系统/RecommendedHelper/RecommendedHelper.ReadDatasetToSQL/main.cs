@@ -106,24 +106,50 @@ namespace RecommendedHelper.ReadDatasetToSQL
         /// <summary>
         /// 推荐物品
         /// </summary>
-        public void Recommend()
-        { 
-
+        public void GetRecommend()
+        {
+            int mostInterestNum; //当前最感兴趣物品
+            for (int i = 0; i < recommendNum; i++)
+            {
+                mostInterestNum = 0;
+            }
         }
 
         /// <summary>
-        /// 计算召回率
+        /// 计算召回率 和 准确率
         /// </summary>
         /// <returns></returns>
-        public double Recall()
+        public void GetResult_Recall_Precision()
         {
-            return 0.0;
+            int test_InterestNum = 0;   //测试集上用户兴趣的物品数量
+            int totalNum = 0;     //总共命中的物品个数
+            int []count=new int[userTotal];      //cout[i] 为用户的推荐结果和测试集命中物品个数交集
+            double recall = 0.0;    //召回率
+            double precision = 0.0;   //准确率
+            for (int i = 0; i < userTotal; i++)
+            {
+                for (int j = 0; j < itemTotal; j++)
+                {
+                    if (TestSet[j,i]!=0)  //用户 i 对物品 j 感兴趣
+                    {
+                        test_InterestNum++;
+                        for (int k = 0; k < recommendNum; k++)
+                        {
+                            if (RecommendSet[i,k]==j)    //用户对物品 j 感兴趣，同时也是物品 j 也是推荐物品
+                            {
+                                count[i]++;
+                            }
+                        }
+                    }
+                }
+                totalNum = totalNum + count[i];
+            }
+
+
+            recall= totalNum / (test_InterestNum * 1.0); // 召回率
+            precision = totalNum / (recommendNum * userTotal * 1.0);  //准确率
         }
 
-        public double Precision()
-        {
-            return 0.0;
-        }
 
     }
 }

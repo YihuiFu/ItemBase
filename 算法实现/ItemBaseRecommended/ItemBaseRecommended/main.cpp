@@ -73,7 +73,7 @@ void main()
 
 #pragma region --输出物品相似性矩阵
 	//输出物品相似性矩阵	
-	/*
+	
 	cout<<"物品相似性矩阵:\n";
 	for (i=0;i<5;i++)
 	{
@@ -84,7 +84,7 @@ void main()
 	}
 	cout<<endl;
 	}
-	*/
+	
 #pragma endregion
 
 
@@ -94,7 +94,7 @@ void main()
 		sort(ArrItemSimi[i], ArrOrderedItemSimi[i]);
 	}
 	//输出排序后的物品相似性矩阵
-	/*
+	
 	for(i=0;i<5;i++)
 	{
 	cout<<"item"<<i<<":  "<<endl;
@@ -104,7 +104,7 @@ void main()
 	}
 	cout<<endl;
 	}
-	*/
+	
 	//4.得到用户对物品兴趣程度的矩阵
 	for (i = 0; i<userSum; i++)
 	{
@@ -115,7 +115,7 @@ void main()
 		}
 	}
 	//输出用户对物品兴趣的矩阵
-	/*
+	
 	for (i=0;i<5;i++)
 	{
 	cout<<"User"<<i<<":   "<<endl;
@@ -125,7 +125,7 @@ void main()
 	}
 	cout<<endl;
 	}
-	*/
+	
 
 	//5.通过物品兴趣程度，推荐前recommendNum个
 	getRecommend();
