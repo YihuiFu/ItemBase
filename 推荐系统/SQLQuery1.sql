@@ -20,6 +20,15 @@ create table Ratings
 	FOREIGN KEY (itemID) REFERENCES Items(itemID)
 )
 
+create table SimilarityMatrix
+(
+	itemOne int not null,
+	itemTwo int not null,
+	similarity float not null,
+	FOREIGN KEY (itemOne) REFERENCES Items(itemID),
+	FOREIGN KEY (itemTwo) REFERENCES Items(itemID)
+)
+
 declare @i int 
 set @i=1
 while @i<=6040

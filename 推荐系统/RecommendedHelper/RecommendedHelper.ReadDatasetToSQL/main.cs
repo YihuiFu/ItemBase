@@ -14,27 +14,27 @@ namespace RecommendedHelper.ReadDatasetToSQL
 {
     public class main
     {
-        const int userTotal = 6040; //用户总数
-        const int itemTotal = 3952; //物品总数
-        const int recommendNum = 10;// 推荐数量
+        public const int userTotal = 6040; //用户总数
+        public const int itemTotal = 3952; //物品总数
+        public const int recommendNum = 10;// 推荐数量
 
-        double recall = 0.0;    //召回率
-        double precision = 0.0;   //准确率
+        public double recall = 0.0;    //召回率
+        public double precision = 0.0;   //准确率
 
-        int[,] TrainSet = new int[itemTotal, userTotal];  //训练集
-        int[,] TestSet = new int[itemTotal, userTotal]; //测试集
+        public int[,] TrainSet = new int[itemTotal, userTotal];  //训练集
+        public int[,] TestSet = new int[itemTotal, userTotal]; //测试集
 
-        double[,] SimilarityMatrix = new double[itemTotal, itemTotal];  //相似性矩阵， 存储物品的相似度
-        double[,] UserInterestMatrix = new double[userTotal, itemTotal];  // 用户兴趣物品矩阵
+        public double[,] SimilarityMatrix = new double[itemTotal, itemTotal];  //相似性矩阵， 存储物品的相似度
+        public double[,] UserInterestMatrix = new double[userTotal, itemTotal];  // 用户兴趣物品矩阵
 
-        int[,] RecommendSet = new int[userTotal, recommendNum];// 存储用户推荐结果
+        public int[,] RecommendSet = new int[userTotal, recommendNum];// 存储用户推荐结果
         public struct simi
         {
             public double value;  //相似值
             public int num;   // 相似物品号
         };
 
-        simi[,] OrderedSimilarityMatrix = new simi[itemTotal, itemTotal];  //排序后的相似性矩阵
+        public simi[,] OrderedSimilarityMatrix = new simi[itemTotal, itemTotal];  //排序后的相似性矩阵
 
         /// <summary>
         /// 将数据集分成训练集 和 测试集  ----------------Success
@@ -163,6 +163,15 @@ namespace RecommendedHelper.ReadDatasetToSQL
                 OrderedSimilarityMatrix[itemIndex, m] = temp;
                 orderFlag[maxnum] = 1;
                 m++;
+            }
+        }
+
+
+        public void GetOrderSimilarityMatrixForAllItem()
+        {
+            for (int i = 0; i < itemTotal; i++)
+            {
+                SortSimilarityMatrix(i);
             }
         }
 
