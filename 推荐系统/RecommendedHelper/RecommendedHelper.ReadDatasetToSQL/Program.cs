@@ -60,14 +60,37 @@ namespace RecommendedHelper.ReadDatasetToSQL
             //Recommend recommend = new Recommend();
             //recommend.SplitData();
 
-            //---------测试------------------
+            //---------测试--------------------------------------------
 
-            main recommend = new main();
-            recommend.SplitDataSet(8, 1);
-            recommend.GetSimilarityMatrix();
+            //main recommend = new main();
+            //recommend.SplitDataSet(8, 1);
+            //recommend.GetSimilarityMatrix();
 
-            //------------------------------
+            //----------------------------------------------------------
 
+            //测试数组排序
+            //int[,] intArr = new int[,] { {9,3,5,1},{7,0,6,5}};
+            //Array.Sort(intArr,0,8);
+            //for (int i = 0; i < 2; i++)
+            //{
+            //    for (int j = 0; j < 4; j++)
+            //    {
+            //        Console.WriteLine(intArr[i, j]);
+            //    }
+               
+            //}
+
+            Dictionary<int, double> items = new Dictionary<int, double>();
+            items.Add(5,0.32);
+            items.Add(4,0.21);
+            items.Add(6,0.36);
+            items.Add(1,0.25);
+          //  items.OrderBy(it=>it.Value);
+            var result = from it in items orderby it.Value select it;
+            foreach (var item in result)
+            {
+                Console.WriteLine(item.Key+" "+item.Value);
+            }
 
             Console.ReadKey();
 

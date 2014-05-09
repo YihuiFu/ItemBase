@@ -15,7 +15,6 @@ namespace RecommendedHelper.ReadDatasetToSQL
     {
         //1.分离数据集
        Dictionary<int, Dictionary<int, int>> ArrTrain = new Dictionary<int, Dictionary<int, int>>();
-
        public void SplitData()
        {
            Dictionary<int, int> item = new Dictionary<int, int>();
@@ -70,6 +69,33 @@ namespace RecommendedHelper.ReadDatasetToSQL
        } 
        #endregion
        
+
+       //public int[] GetRecomend(int userId,List<int> ?itemIds)
+       //{
+       //    List<int> items = new List<int>();
+       //    items.Sort();
+       //    return null;
+       //}
+
+
+       public int[] GetRecommend(int userId,params int[]itemIds)
+       {
+           Dictionary<int, double> recommendedList = new Dictionary<int, double>();
+           //根据用户id 获取最佳推荐的10个，添加到recommendedList
+
+           //根据itemid 获取相似度较高的物品，添加到recommendedList
+
+           //根据相似度高低对 recommendedList进行排序
+           var result = from it in recommendedList orderby it.Value select it;
+           foreach (var item in result.Take(10))
+           {
+               Console.WriteLine(item.Key);
+           }
+          
+           return null;
+       }
+
+
    
     }
 }

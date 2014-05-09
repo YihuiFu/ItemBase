@@ -28,13 +28,13 @@ namespace RecommendedHelper.ReadDatasetToSQL
         double[,] UserInterestMatrix = new double[userTotal, itemTotal];  // 用户兴趣物品矩阵
 
         int[,] RecommendSet = new int[userTotal, recommendNum];// 存储用户推荐结果
-        struct simi
+        public struct simi
         {
-            double value;  //相似值
-            int num;   // 相似物品号
+            public double value;  //相似值
+            public int num;   // 相似物品号
         };
 
-        simi [,]OrderedSimilarityMatrix=new simi[itemTotal,itemTotal];  //排序后的相似性矩阵
+        simi[,] OrderedSimilarityMatrix = new simi[itemTotal, itemTotal];  //排序后的相似性矩阵
 
         /// <summary>
         /// 将数据集分成训练集 和 测试集  ----------------Success
@@ -135,16 +135,96 @@ namespace RecommendedHelper.ReadDatasetToSQL
 
         }
 
+       /// <summary>
+        /// 排序物品相似性矩阵
+       /// </summary>
+       /// <param name="itemIndex">矩阵行index</param>
+        public void SortSimilarityMatrix(int itemIndex)
+        {
+            int[] orderFlag = new int[itemTotal];  //是否已排序好
+            int maxnum;
+            int m = 0;
+            int t = 0;
+            for (int i = 0; i < itemTotal; i++)
+            {
+                t = 0;
+                while (orderFlag[t] != 0)
+                    t++;
+                maxnum = t;
+                for (int j = 0; j < itemTotal; j++)
+                {
+                    if (SimilarityMatrix[itemIndex, j] > SimilarityMatrix[itemIndex, maxnum] && orderFlag[j] == 0)
+                    {
+                        maxnum = j;
+                    }
+                }
+                simi temp = new simi {num=maxnum,value=SimilarityMatrix[itemIndex,maxnum] };
+
+                OrderedSimilarityMatrix[itemIndex, m] = temp;
+                orderFlag[maxnum] = 1;
+                m++;
+            }
+        }
+
+        /// <summary>
+        /// 通过 K 个最相近邻居，获取用户user 对item 的兴趣程度
+        /// </summary>
+        /// <param name="user">用户ID</param>
+        /// <param name="item">物品ID</param>
+        /// <param name="k"> K 个最近邻居</param>
+        /// <returns></returns>
+        public double CalculateUserInterest(int userId,int itemId,int k)
+        {
+            for (int i = 1; i < k; i++)
+            {
+                UserInterestMatrix[userId, itemId] += OrderedSimilarityMatrix[itemId, i].value;
+            }
+            return UserInterestMatrix[userId, itemId];
+        }
+
+        /// <summary>
+        /// 计算所有用户的兴趣程度矩阵
+        /// </summary>
+        public void GetUserInterestMatrix()
+        {
+            for (int i = 0; i < userTotal; i++)
+            {
+                for (int j = 0; j < itemTotal; j++)
+                {
+                    if (TrainSet[j,i]==0)
+                    {
+                        UserInterestMatrix[i, j] = CalculateUserInterest(i,j,10);//----------K默认是10
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// 推荐物品
         /// </summary>
         public void GetRecommend()
         {
             int mostInterestNum; //当前最感兴趣物品
-            for (int i = 0; i < recommendNum; i++)
+            for (int i = 0; i < userTotal; i++)
             {
-                mostInterestNum = 0;
+                int []orderFlag=new int[itemTotal];
+                for (int j = 0; j < recommendNum; j++)
+                {
+                    mostInterestNum = 0;
+                    while (orderFlag[mostInterestNum] != 0)
+                        mostInterestNum++;
+                    for (int k = 0; k < itemTotal; k++)
+                    {
+                        if (UserInterestMatrix[i,mostInterestNum]<UserInterestMatrix[j,k]&&orderFlag[k]==0)
+                        {
+                            mostInterestNum = k;
+                        }
+                    }
+                    orderFlag[mostInterestNum] = 1;
+                    RecommendSet[i, j] = mostInterestNum;
+                }
             }
+
         }
 
         /// <summary>
@@ -156,7 +236,7 @@ namespace RecommendedHelper.ReadDatasetToSQL
             int test_InterestNum = 0;   //测试集上用户兴趣的物品数量
             int totalNum = 0;     //总共命中的物品个数
             int[] count = new int[userTotal];      //cout[i] 为用户的推荐结果和测试集命中物品个数交集
-          
+
             for (int i = 0; i < userTotal; i++)
             {
                 for (int j = 0; j < itemTotal; j++)
