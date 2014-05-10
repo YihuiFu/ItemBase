@@ -29,6 +29,15 @@ create table SimilarityMatrix
 	FOREIGN KEY (itemTwo) REFERENCES Items(itemID)
 )
 
+create table UserInterest
+(
+	userID int not null,
+	itemID int not null,
+	interest float not null
+	FOREIGN KEY (userID) REFERENCES Users(userID),
+	FOREIGN KEY (itemID) REFERENCES Items(itemID)	
+)
+
 declare @i int 
 set @i=1
 while @i<=6040

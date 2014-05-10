@@ -1,9 +1,10 @@
-﻿Build started 2014/5/8 20:14:30.
+﻿Build started 2014/5/10 21:17:14.
      1>Project "F:\2014-毕设\1智能电子商务系统的用户行为建模和数据挖掘算法研究\Graduation.git\ItemBase\算法实现\ItemBaseRecommended\ItemBaseRecommended\ItemBaseRecommended.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
          main.cpp
      1>f:\2014-毕设\1智能电子商务系统的用户行为建模和数据挖掘算法研究\graduation.git\itembase\算法实现\itembaserecommended\itembaserecommended\main.cpp(45): warning C4101: 'diversity' : unreferenced local variable
+     1>f:\2014-毕设\1智能电子商务系统的用户行为建模和数据挖掘算法研究\graduation.git\itembase\算法实现\itembaserecommended\itembaserecommended\main.cpp(45): warning C4101: 'coverage' : unreferenced local variable
        Link:
          D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"F:\2014-毕设\1智能电子商务系统的用户行为建模和数据挖掘算法研究\Graduation.git\ItemBase\算法实现\ItemBaseRecommended\Debug\ItemBaseRecommended.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"F:\2014-毕设\1智能电子商务系统的用户行为建模和数据挖掘算法研究\Graduation.git\ItemBase\算法实现\ItemBaseRecommended\Debug\ItemBaseRecommended.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"F:\2014-毕设\1智能电子商务系统的用户行为建模和数据挖掘算法研究\Graduation.git\ItemBase\算法实现\ItemBaseRecommended\Debug\ItemBaseRecommended.lib" /MACHINE:X86 Debug\main.obj
          ItemBaseRecommended.vcxproj -> F:\2014-毕设\1智能电子商务系统的用户行为建模和数据挖掘算法研究\Graduation.git\ItemBase\算法实现\ItemBaseRecommended\Debug\ItemBaseRecommended.exe
@@ -11,4 +12,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:05.16
+Time Elapsed 00:00:01.23

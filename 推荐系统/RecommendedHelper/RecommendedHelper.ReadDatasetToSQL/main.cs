@@ -118,6 +118,9 @@ namespace RecommendedHelper.ReadDatasetToSQL
                 for (int j = 0; j < itemTotal; j++)
                 {
                     SimilarityMatrix[i, j] = CalculateSimilarityForA_B(i, j);
+                    //double similar= CalculateSimilarityForA_B(i, j);
+                    //string sqlStr = string.Format("insert into SimilarityMatrix values({0},{1},{2})",i+1,j+1,similar);
+                    //SqlSeverProvider.ExecuteNonQuery(sqlStr);
                 }
             }
 
