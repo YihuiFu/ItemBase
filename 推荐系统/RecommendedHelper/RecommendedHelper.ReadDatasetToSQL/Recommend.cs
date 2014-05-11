@@ -82,8 +82,13 @@ namespace RecommendedHelper.ReadDatasetToSQL
        {
            Dictionary<int, double> recommendedList = new Dictionary<int, double>();
            //根据用户id 获取最佳推荐的10个，添加到recommendedList
+           string sqlStr =string.Format( "select top(10) itemID from UserInterest where userID={0} and interest !=0 order by interest desc",userId);
+           SqlSeverProvider.ExecuteReader(sqlStr);
 
            //根据itemid 获取相似度较高的物品，添加到recommendedList
+          // select top(20)* from SimilarityMatrix where itemOne=176 order by similarity desc
+
+           // select top(10) itemID,COUNT(itemID) as total from Ratings group by itemID order by total desc  高访问率
 
            //根据相似度高低对 recommendedList进行排序
            var result = from it in recommendedList orderby it.Value select it;

@@ -19,6 +19,10 @@ create table Ratings
 	FOREIGN KEY (userID) REFERENCES Users(userID),
 	FOREIGN KEY (itemID) REFERENCES Items(itemID)
 )
+select * from Ratings
+
+create index Ratings_Index
+on Ratings(userID,itemID)
 
 create table SimilarityMatrix
 (
@@ -60,3 +64,24 @@ create table tb_test
 )
 
 insert into tb_test values(12)
+
+select top(10) itemID,COUNT(itemID) as total from Ratings group by itemID order by total desc
+
+create table tb_TestMatrix
+(
+	itemOne int not null,
+	itemTwo int not null,
+	similarity float not null
+)
+
+create table tb_TestRatings
+(
+	userID int not null,
+	itemID int not null,
+	rating int
+)
+
+select count(*) from SimilarityMatrix
+DELETE FROM tb_TestRatings where userID>0
+
+select * from tb_TestMatrix

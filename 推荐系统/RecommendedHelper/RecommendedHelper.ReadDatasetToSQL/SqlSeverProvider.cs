@@ -172,5 +172,16 @@ namespace RecommendedHelper.ReadDatasetToSQL
                 return null;
             }
         }
+
+        public static void ExecuteSqlBulkCopy(DataTable dt,string tableName)
+        {
+            SqlConnection sqlCon = DBConnect.Connect();
+            SqlBulkCopy bulkCopy = new SqlBulkCopy(sqlCon,SqlBulkCopyOptions.TableLock,null);
+            bulkCopy.DestinationTableName = tableName;
+            bulkCopy.BatchSize = dt.Rows.Count;
+            sqlCon.Open();
+            bulkCopy.WriteToServer(dt);
+            bulkCopy.Close();
+        }
     }
 }

@@ -25,7 +25,7 @@ namespace RecommendedHelper.ReadDatasetToSQL
         public int[,] TestSet = new int[itemTotal, userTotal]; //测试集
 
         public double[,] SimilarityMatrix = new double[itemTotal, itemTotal];  //相似性矩阵， 存储物品的相似度
-        public double[,] UserInterestMatrix = new double[userTotal, itemTotal];  // 用户兴趣物品矩阵
+        public double[,] UserInterestMatrix = new double[userTotal, itemTotal];  // 用户对物品的兴趣程度矩阵
 
         public int[,] RecommendSet = new int[userTotal, recommendNum];// 存储用户推荐结果
         public struct simi
@@ -111,18 +111,52 @@ namespace RecommendedHelper.ReadDatasetToSQL
         /// <summary>
         /// 计算所有物品之间的相似性，得到相似性矩阵 --------------Success
         /// </summary>
+        /// 
+
+        //DataTable Tb_SimilarityMatrix = new DataTable();
+        
+        //table.Columns.Add("userID", System.Type.GetType("System.Int32"));
+        //table.Columns.Add("itemID", System.Type.GetType("System.Int32"));
+        //table.Columns.Add("rating", System.Type.GetType("System.Int32"));
+        //string tableName = "tb_TestRatings";
+
+        //     //sqlbulkCopy
+        //     //DataRow row = table.NewRow();
+        //     //row[0] = userId;
+        //     //row[1] = itemId;
+        //     //row[2] = rating;
+        //     //table.Rows.Add(row);
+
+        //// SqlSeverProvider.ExecuteSqlBulkCopy(table, tableName);
+
         public void GetSimilarityMatrix()
         {
+            DataTable Tb_SimilarityMatrix = new DataTable();
+            Tb_SimilarityMatrix.Columns.Add("itemOne", System.Type.GetType("System.Int32"));
+            Tb_SimilarityMatrix.Columns.Add("itemTwo", System.Type.GetType("System.Int32"));
+            Tb_SimilarityMatrix.Columns.Add("similarity", System.Type.GetType("System.Double"));
+            string tableName = "SimilarityMatrix";
+
             for (int i = 0; i < itemTotal; i++)
             {
+               
                 for (int j = 0; j < itemTotal; j++)
                 {
                     SimilarityMatrix[i, j] = CalculateSimilarityForA_B(i, j);
+                   // double similar = CalculateSimilarityForA_B(i, j);
+                    DataRow row = Tb_SimilarityMatrix.NewRow();
+                    row[0] = i + 1;
+                    row[1] = j + 1;
+                    row[2] = SimilarityMatrix[i, j];
+                    Tb_SimilarityMatrix.Rows.Add(row);
+
                     //double similar= CalculateSimilarityForA_B(i, j);
                     //string sqlStr = string.Format("insert into SimilarityMatrix values({0},{1},{2})",i+1,j+1,similar);
                     //SqlSeverProvider.ExecuteNonQuery(sqlStr);
                 }
             }
+            SqlSeverProvider.ExecuteSqlBulkCopy(Tb_SimilarityMatrix, tableName);
+            Console.WriteLine("Tb_SimilarityMatrix OK ");
 
             // 输出相似性矩阵
             //for (int i = 0; i < 3; i++)
@@ -189,7 +223,10 @@ namespace RecommendedHelper.ReadDatasetToSQL
         {
             for (int i = 1; i < k; i++)
             {
-                UserInterestMatrix[userId, itemId] += OrderedSimilarityMatrix[itemId, i].value;
+                if (TrainSet[OrderedSimilarityMatrix[itemId,i].num,userId]>0)  //用户对相似物品有过评论
+                {
+                    UserInterestMatrix[userId, itemId] += OrderedSimilarityMatrix[itemId, i].value;
+                }
             }
             return UserInterestMatrix[userId, itemId];
         }
@@ -199,6 +236,12 @@ namespace RecommendedHelper.ReadDatasetToSQL
         /// </summary>
         public void GetUserInterestMatrix()
         {
+            DataTable Tb_UserInterest = new DataTable();
+            Tb_UserInterest.Columns.Add("userID", System.Type.GetType("System.Int32"));
+            Tb_UserInterest.Columns.Add("itemID", System.Type.GetType("System.Int32"));
+            Tb_UserInterest.Columns.Add("interest", System.Type.GetType("System.Double"));
+            string tableName = "UserInterest";
+
             for (int i = 0; i < userTotal; i++)
             {
                 for (int j = 0; j < itemTotal; j++)
@@ -206,9 +249,17 @@ namespace RecommendedHelper.ReadDatasetToSQL
                     if (TrainSet[j,i]==0)
                     {
                         UserInterestMatrix[i, j] = CalculateUserInterest(i,j,10);//----------K默认是10
+                        DataRow row = Tb_UserInterest.NewRow();
+                        row[0] = i + 1;
+                        row[1] = j + 1;
+                        row[2] = UserInterestMatrix[i, j];
+                        Tb_UserInterest.Rows.Add(row);
                     }
                 }
             }
+
+            SqlSeverProvider.ExecuteSqlBulkCopy(Tb_UserInterest, tableName);
+            Console.WriteLine("Tb_UserInterest OK ");
         }
 
         /// <summary>
@@ -236,6 +287,7 @@ namespace RecommendedHelper.ReadDatasetToSQL
                     RecommendSet[i, j] = mostInterestNum;
                 }
             }
+
 
         }
 
