@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
+using RecommendedSystem.Common;
 
 namespace RecommendedSystem.Web.Controllers
 {
@@ -10,9 +12,45 @@ namespace RecommendedSystem.Web.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
+            if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
+            {
+                var userid = System.Web.HttpContext.Current.User.Identity.Name;
+                ViewBag.Message = "login success!  "+userid;
+            }
+            else
+            {
+                ViewBag.Message = "not success";
+            }
+           
 
             return View();
+        }
+
+
+        public ActionResult Recommend()
+        {
+            List<int> recommendList = new List<int>();
+            // 用户已经登录
+            if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
+            {
+                int userId = int.Parse(System.Web.HttpContext.Current.User.Identity.Name);
+                //从推荐列表中查询
+                if (RecommendedSystemHelper.GetRecommend(userId).Count>0)
+                {
+                    recommendList = RecommendedSystemHelper.GetRecommend(userId).Take(6).ToList();
+                }
+                else
+                {
+                    recommendList = RecommendedSystemHelper.GetTop().Take(6).ToList();
+                }
+
+                //推荐访问率最高的
+            }
+            else // 用户未登录，推荐访问率最高的
+            {
+                recommendList = RecommendedSystemHelper.GetTop().Take(6).ToList();
+            }
+            return View(recommendList);
         }
 
         public ActionResult About()

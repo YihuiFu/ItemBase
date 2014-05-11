@@ -586,6 +586,63 @@ tr.pager td {
     padding: 0 0.25em 0 0;
 }
 
+ /*-----------------Home list--------------------------------------------------*/
+.image_box {
+	float: left;
+	margin: 4px;
+	width: 150px;
+	height: 100px;
+}
+
+a.bc1
+{
+    background-color: #BC1C48;
+}
+a.bc2
+{
+  background-color:#339933;
+}
+a.bc3
+{
+	 background-color: #5434AF;
+}
+a.bc4
+{
+	 background-color:#15ADEF;
+}
+a.bc5
+{
+ background-color:#D613F3;
+}
+a.bc6
+{
+  background-color:#F5B508;
+}
+a.bc7
+{
+	 background-color:#E17E78;
+}
+a.bc8
+{
+	 background-color: #BC1C48;
+}
+a.bc9
+{
+	background-color:#4E3D0E;
+}
+a.bc10
+{
+
+}
+a.bc11
+{
+  background-color:#CCC;
+}
+a.bc12
+{
+  background-color:#0F0;
+}
+/*------------------Home List end----------------------------------------------------*/
 
 /********************
 *   Mobile Styles   *
