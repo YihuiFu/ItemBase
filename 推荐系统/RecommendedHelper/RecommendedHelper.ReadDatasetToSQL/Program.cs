@@ -92,6 +92,8 @@ namespace RecommendedHelper.ReadDatasetToSQL
             recommend.GetUserInterestMatrix();
             recommend.GetRecommend();
 
+            var result = 1;
+
 
 
             //----------------------------------------------------------

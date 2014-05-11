@@ -131,15 +131,16 @@ namespace RecommendedHelper.ReadDatasetToSQL
 
         public void GetSimilarityMatrix()
         {
-            DataTable Tb_SimilarityMatrix = new DataTable();
-            Tb_SimilarityMatrix.Columns.Add("itemOne", System.Type.GetType("System.Int32"));
-            Tb_SimilarityMatrix.Columns.Add("itemTwo", System.Type.GetType("System.Int32"));
-            Tb_SimilarityMatrix.Columns.Add("similarity", System.Type.GetType("System.Double"));
-            string tableName = "SimilarityMatrix";
+            Array.Clear(SimilarityMatrix, 0, 3952 * 3952);
+            
 
             for (int i = 0; i < itemTotal; i++)
             {
-               
+                DataTable Tb_SimilarityMatrix = new DataTable();
+                Tb_SimilarityMatrix.Columns.Add("itemOne", System.Type.GetType("System.Int32"));
+                Tb_SimilarityMatrix.Columns.Add("itemTwo", System.Type.GetType("System.Int32"));
+                Tb_SimilarityMatrix.Columns.Add("similarity", System.Type.GetType("System.Double"));
+                string tableName = "SimilarityMatrix";
                 for (int j = 0; j < itemTotal; j++)
                 {
                     SimilarityMatrix[i, j] = CalculateSimilarityForA_B(i, j);
@@ -154,8 +155,9 @@ namespace RecommendedHelper.ReadDatasetToSQL
                     //string sqlStr = string.Format("insert into SimilarityMatrix values({0},{1},{2})",i+1,j+1,similar);
                     //SqlSeverProvider.ExecuteNonQuery(sqlStr);
                 }
+                SqlSeverProvider.ExecuteSqlBulkCopy(Tb_SimilarityMatrix, tableName);
             }
-            SqlSeverProvider.ExecuteSqlBulkCopy(Tb_SimilarityMatrix, tableName);
+          
             Console.WriteLine("Tb_SimilarityMatrix OK ");
 
             // 输出相似性矩阵
@@ -236,14 +238,16 @@ namespace RecommendedHelper.ReadDatasetToSQL
         /// </summary>
         public void GetUserInterestMatrix()
         {
-            DataTable Tb_UserInterest = new DataTable();
-            Tb_UserInterest.Columns.Add("userID", System.Type.GetType("System.Int32"));
-            Tb_UserInterest.Columns.Add("itemID", System.Type.GetType("System.Int32"));
-            Tb_UserInterest.Columns.Add("interest", System.Type.GetType("System.Double"));
-            string tableName = "UserInterest";
+            Array.Clear(UserInterestMatrix,0,3952*6040);
+           
 
             for (int i = 0; i < userTotal; i++)
             {
+                DataTable Tb_UserInterest = new DataTable();
+                Tb_UserInterest.Columns.Add("userID", System.Type.GetType("System.Int32"));
+                Tb_UserInterest.Columns.Add("itemID", System.Type.GetType("System.Int32"));
+                Tb_UserInterest.Columns.Add("interest", System.Type.GetType("System.Double"));
+                string tableName = "UserInterest";
                 for (int j = 0; j < itemTotal; j++)
                 {
                     if (TrainSet[j,i]==0)
@@ -256,9 +260,11 @@ namespace RecommendedHelper.ReadDatasetToSQL
                         Tb_UserInterest.Rows.Add(row);
                     }
                 }
+
+                SqlSeverProvider.ExecuteSqlBulkCopy(Tb_UserInterest, tableName);
+
             }
 
-            SqlSeverProvider.ExecuteSqlBulkCopy(Tb_UserInterest, tableName);
             Console.WriteLine("Tb_UserInterest OK ");
         }
 
@@ -287,7 +293,28 @@ namespace RecommendedHelper.ReadDatasetToSQL
                     RecommendSet[i, j] = mostInterestNum;
                 }
             }
+            Console.WriteLine("推荐完成...");
 
+            for (int i = 0; i < 6040; i++)
+            {
+                DataTable Tb_Recommended = new DataTable();
+                Tb_Recommended.Columns.Add("userID", System.Type.GetType("System.Int32"));
+                Tb_Recommended.Columns.Add("itemID", System.Type.GetType("System.Int32"));
+                string tableName = "Recommended";
+                for (int j = 0; j < 10; j++)
+                {
+                    var item=(int)RecommendSet[i,j];
+                    //string str = string.Format("insert into Recommended values({0},{1})",i+1,item);
+                    //SqlSeverProvider.ExecuteNonQuery(str);
+                    DataRow row = Tb_Recommended.NewRow();
+                    row[0] = i + 1;
+                    row[1] = item;
+                    Tb_Recommended.Rows.Add(row);
+                }
+                SqlSeverProvider.ExecuteSqlBulkCopy(Tb_Recommended, tableName);
+
+            }
+            Console.WriteLine("推荐完成22222...");
 
         }
 
