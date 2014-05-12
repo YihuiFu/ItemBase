@@ -33,6 +33,9 @@ create table SimilarityMatrix
 	FOREIGN KEY (itemTwo) REFERENCES Items(itemID)
 )
 
+create index SimilarityMatrix_Index
+on SimilarityMatrix(itemOne)
+
 create table UserInterest
 (
 	userID int not null,
@@ -41,6 +44,9 @@ create table UserInterest
 	FOREIGN KEY (userID) REFERENCES Users(userID),
 	FOREIGN KEY (itemID) REFERENCES Items(itemID)	
 )
+
+create index UserInterest_Index
+on UserInterest(userID)
 
 declare @i int 
 set @i=1
