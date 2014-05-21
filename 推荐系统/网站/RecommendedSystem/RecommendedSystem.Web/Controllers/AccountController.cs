@@ -10,7 +10,7 @@ using Microsoft.Web.WebPages.OAuth;
 using WebMatrix.WebData;
 using RecommendedSystem.Web.Filters;
 using RecommendedSystem.Web.Models;
-using RecommendedSystem.Common;
+using RecommendedSystem.Core;
 
 namespace RecommendedSystem.Web.Controllers
 {

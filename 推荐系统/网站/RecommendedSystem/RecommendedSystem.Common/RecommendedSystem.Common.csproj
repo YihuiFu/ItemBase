@@ -41,7 +41,6 @@
   <ItemGroup>
     <Compile Include="DBConnect.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RecommendedSystemHelper.cs" />
     <Compile Include="SqlSeverProvider.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

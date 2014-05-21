@@ -9,7 +9,7 @@ namespace RecommendedSystem.Common
 {
    public static class DBConnect
     {
-       private static string connectString = @"Data Source=.;Initial Catalog=MovieLens;Trusted_Connection=SSPI";
+       private static string connectString = @"Data Source=.;Initial Catalog=MovieLens;User Id=sa;Password=261092;";
        public static SqlConnection Connect()  //.\SQLEXPRESS   sql.m125.vhostgo.com
        {
            SqlConnection con = new SqlConnection(connectString);

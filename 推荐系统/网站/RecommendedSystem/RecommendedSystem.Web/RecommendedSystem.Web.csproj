@@ -43,6 +43,9 @@
     <Reference Include="RecommendedSystem.Common">
       <HintPath>..\RecommendedSystem.Common\bin\Debug\RecommendedSystem.Common.dll</HintPath>
     </Reference>
+    <Reference Include="RecommendedSystem.Core">
+      <HintPath>..\RecommendedSystem.Core\bin\Debug\RecommendedSystem.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
@@ -255,6 +258,10 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
+    <Content Include="Images\1.jpg" />
+    <Content Include="Images\alien.jpg" />
+    <Content Include="Images\bc.png" />
+    <Content Include="Images\extra.png" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -315,6 +322,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

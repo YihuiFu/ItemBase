@@ -590,15 +590,19 @@ tr.pager td {
 .image_box {
 	float: left;
 	margin: 4px;
-	width: 150px;
-	height: 100px;
+	width: 145px;
+	height: 120px;
+    /*background-color:#BC1C48;*/
+    /*background:url("../Images/bc.png") no-repeat 0 50%;*/
+    border:groove;
+    font-size:20px;
 }
 
-a.bc1
+bc1
 {
     background-color: #BC1C48;
 }
-a.bc2
+bc2
 {
   background-color:#339933;
 }

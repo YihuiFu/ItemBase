@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using RecommendedSystem.Common;
+using RecommendedSystem.Core;
 
 namespace RecommendedSystem.Web.Controllers
 {
