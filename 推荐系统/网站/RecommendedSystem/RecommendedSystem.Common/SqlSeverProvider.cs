@@ -40,7 +40,6 @@ namespace RecommendedSystem.Common
             }
         }
 
-
         /// <summary>
         /// Execute Select
         /// </summary>

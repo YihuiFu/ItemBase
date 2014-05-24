@@ -57,8 +57,7 @@ namespace RecommendedSystem.Core
         public double CalculateSimilarityForA_B(int itemA, int itemB)
         {
             int commonCount = 0; //物品A 和物品 B都被用户评论的个数
-            int ACount = 0;
-            int BCount = 0;
+            int ACount = 0;int BCount = 0;
             double similarity = 0.0;
             for (int i = 0; i < userTotal; i++)
             {
@@ -75,7 +74,6 @@ namespace RecommendedSystem.Core
                     BCount++;
                 }
             }
-
             double temp = Math.Sqrt(ACount * BCount);
             if (temp == 0)
             {
@@ -89,15 +87,11 @@ namespace RecommendedSystem.Core
         }
 
         /// <summary>
-        /// 计算所有物品之间的相似性，得到相似性矩阵 --------------Success
+        /// 计算所有物品之间的相似性，得到相似性矩阵 
         /// </summary>
-        /// 
-
         public void GetSimilarityMatrix()
         {
-            Array.Clear(SimilarityMatrix, 0, 3952 * 3952);
-            
-
+            Array.Clear(SimilarityMatrix, 0, itemTotal * itemTotal);
             for (int i = 0; i < itemTotal; i++)
             {
                 DataTable Tb_SimilarityMatrix = new DataTable();
@@ -108,34 +102,14 @@ namespace RecommendedSystem.Core
                 for (int j = 0; j < itemTotal; j++)
                 {
                     SimilarityMatrix[i, j] = CalculateSimilarityForA_B(i, j);
-                   // double similar = CalculateSimilarityForA_B(i, j);
                     DataRow row = Tb_SimilarityMatrix.NewRow();
                     row[0] = i + 1;
                     row[1] = j + 1;
                     row[2] = SimilarityMatrix[i, j];
                     Tb_SimilarityMatrix.Rows.Add(row);
-
-                    //double similar= CalculateSimilarityForA_B(i, j);
-                    //string sqlStr = string.Format("insert into SimilarityMatrix values({0},{1},{2})",i+1,j+1,similar);
-                    //SqlSeverProvider.ExecuteNonQuery(sqlStr);
                 }
                 SqlSeverProvider.ExecuteSqlBulkCopy(Tb_SimilarityMatrix, tableName);
             }
-          
-            Console.WriteLine("Tb_SimilarityMatrix OK ");
-
-            // 输出相似性矩阵
-            //for (int i = 0; i < 3; i++)
-            //{
-            //    Console.WriteLine("item " + i + ":");
-            //    for (int j = 0; j < 100; j++)
-            //    {
-            //        Console.Write(SimilarityMatrix[i, j] + "  ");
-            //    }
-            //}
-
-
-
         }
 
        /// <summary>
@@ -202,9 +176,7 @@ namespace RecommendedSystem.Core
         /// </summary>
         public void GetUserInterestMatrix()
         {
-            Array.Clear(UserInterestMatrix,0,3952*6040);
-           
-
+            Array.Clear(UserInterestMatrix,0,itemTotal*userTotal);
             for (int i = 0; i < userTotal; i++)
             {
                 DataTable Tb_UserInterest = new DataTable();
@@ -216,7 +188,7 @@ namespace RecommendedSystem.Core
                 {
                     if (TrainSet[j,i]==0)
                     {
-                        UserInterestMatrix[i, j] = CalculateUserInterest(i,j,10);//----------K默认是10
+                        UserInterestMatrix[i, j] = CalculateUserInterest(i,j,10);
                         DataRow row = Tb_UserInterest.NewRow();
                         row[0] = i + 1;
                         row[1] = j + 1;
@@ -224,12 +196,8 @@ namespace RecommendedSystem.Core
                         Tb_UserInterest.Rows.Add(row);
                     }
                 }
-
                 SqlSeverProvider.ExecuteSqlBulkCopy(Tb_UserInterest, tableName);
-
             }
-
-            Console.WriteLine("Tb_UserInterest OK ");
         }
 
         /// <summary>
