@@ -1,0 +1,19 @@
+﻿@{
+    Layout = null;
+}
+@model List<int>
+<h1>
+    @ViewBag.Message
+</h1>
+<div>
+    @{
+        int index=0;
+        foreach (var item in Model)
+        {
+            index++;
+            string bc = "bc" + index;
+             <div class="image_box @bc }"><span style="width:145px;"><a href="#">@item</a></span><img src="../Images/alien.jpg" height="90" width="145" /></div>
+        }
+    }
+
+</div>

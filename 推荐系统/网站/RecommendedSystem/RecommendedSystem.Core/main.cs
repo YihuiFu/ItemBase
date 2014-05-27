@@ -23,8 +23,8 @@ namespace RecommendedSystem.Core
         /// <param name="j"></param> 
         public void SplitDataSet(int i, int j)
         {
-            Array.Clear(TestSet, 0, 3952 * 6040);
-            Array.Clear(TrainSet, 0, 3952 * 6040);
+            Array.Clear(TestSet, 0, itemTotal * userTotal);
+            Array.Clear(TrainSet, 0, itemTotal * userTotal);
             Thread.Sleep(1000);
             string sqlStr = "select * from Ratings";
             var dataReader = SqlSeverProvider.ExecuteReader(sqlStr);
