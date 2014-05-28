@@ -52,6 +52,7 @@ namespace RecommendedSystem.Web.Controllers
                 recommendList = RecommendedSystemHelper.GetTop().Take(6).ToList();
             }
             return View(recommendList);
+           // return Json(recommendList,JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult About()

@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecommendedSystem.Core", "R
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecommendedSystem.Test", "RecommendedSystem.Test\RecommendedSystem.Test.csproj", "{22148824-109F-4EB7-837F-2DF154F25ED2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecommendedSystem.API", "RecommendedSystem.API\RecommendedSystem.API.csproj", "{F865A7FE-01C7-4648-AFE1-8B8B5D911687}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{22148824-109F-4EB7-837F-2DF154F25ED2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22148824-109F-4EB7-837F-2DF154F25ED2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22148824-109F-4EB7-837F-2DF154F25ED2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F865A7FE-01C7-4648-AFE1-8B8B5D911687}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F865A7FE-01C7-4648-AFE1-8B8B5D911687}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F865A7FE-01C7-4648-AFE1-8B8B5D911687}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F865A7FE-01C7-4648-AFE1-8B8B5D911687}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
